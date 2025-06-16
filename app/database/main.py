@@ -8,7 +8,7 @@ def main():
     logging.basicConfig(filename='processing.log', level=logging.INFO)
     
     # Initialize components
-    parser = SMSParser('data/sms_data.xml')
+    parser = SMSParser('data/raw/modified_sms_v2.xml')
     categorizer = SMSCategorizer()
     db = DatabaseManager('data/sms_database.db')
     
