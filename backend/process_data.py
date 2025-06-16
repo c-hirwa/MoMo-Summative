@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import re
 import logging
+import os
 from datetime import datetime
 from database import SMSDatabase
 
@@ -16,7 +17,7 @@ class SMSProcessor:
         self.db = SMSDatabase()
         self.processed_count = 0
         self.error_count = 0
-        
+
         # Transaction type patterns
         self.patterns = {
             'incoming_money': [
@@ -44,31 +45,26 @@ class SMSProcessor:
                 r'(\d+(?:\.\d+)?) RWF.*?bank'
             ]
         }
-    
+
     def extract_transaction_id(self, message):
-        """Extract transaction ID from message"""
         patterns = [
             r'Transaction ID: (\w+)',
             r'TxId: (\w+)',
             r'TxId:(\w+)',
             r'ID: (\w+)'
         ]
-        
         for pattern in patterns:
             match = re.search(pattern, message, re.IGNORECASE)
             if match:
                 return match.group(1)
-        
         return None
-    
+
     def extract_date(self, message):
-        """Extract date from message"""
         patterns = [
             r'Date: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})',
             r'on (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})',
             r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})'
         ]
-        
         for pattern in patterns:
             match = re.search(pattern, message)
             if match:
@@ -76,57 +72,45 @@ class SMSProcessor:
                     return datetime.strptime(match.group(1), '%Y-%m-%d %H:%M:%S')
                 except:
                     continue
-        
         return None
-    
+
     def extract_fee(self, message):
-        """Extract fee from message"""
         fee_match = re.search(r'Fee: (\d+(?:\.\d+)?) RWF', message, re.IGNORECASE)
         return float(fee_match.group(1)) if fee_match else 0.0
-    
+
     def categorize_message(self, message):
-        """Categorize SMS message and extract data"""
         message = message.strip()
-        
-        # Try each transaction type
         for trans_type, patterns in self.patterns.items():
             for pattern in patterns:
                 match = re.search(pattern, message, re.IGNORECASE)
                 if match:
                     return self.build_transaction_data(trans_type, match, message)
-        
         return None
-    
+
     def build_transaction_data(self, trans_type, match, message):
-        """Build transaction data tuple"""
         transaction_id = self.extract_transaction_id(message)
         date_time = self.extract_date(message)
         fee = self.extract_fee(message)
-        
-        # Default values
+
         amount = 0.0
         sender_name = None
         receiver_name = None
         phone_number = None
         agent_name = None
         agent_phone = None
-        
-        # Extract data based on transaction type
+
         if trans_type == 'incoming_money':
             amount = float(match.group(1))
             sender_name = match.group(2).strip()
             trans_type = 'Incoming Money'
-        
         elif trans_type == 'payment_completed':
             amount = float(match.group(1))
             receiver_name = match.group(2).strip()
             trans_type = 'Payment Completed'
-        
         elif trans_type == 'airtime_payment':
             amount = float(match.group(1))
             receiver_name = 'Airtime'
             trans_type = 'Airtime Payment'
-        
         elif trans_type == 'agent_withdrawal':
             if len(match.groups()) >= 4:
                 sender_name = match.group(1).strip()
@@ -136,37 +120,33 @@ class SMSProcessor:
             else:
                 amount = float(match.group(1))
             trans_type = 'Agent Withdrawal'
-        
         elif trans_type == 'internet_bundle':
             amount = float(match.group(1))
             receiver_name = 'Internet Bundle'
             trans_type = 'Internet Bundle'
-        
         elif trans_type == 'bank_transfer':
             amount = float(match.group(1))
             trans_type = 'Bank Transfer'
-        
+
         return (
             transaction_id, trans_type, amount, fee, sender_name,
             receiver_name, phone_number, agent_name, agent_phone,
             date_time, message
         )
-    
+
     def process_xml_file(self, xml_file_path):
-        """Process the XML file"""
         try:
             tree = ET.parse(xml_file_path)
             root = tree.getroot()
-            
+            sms_elements = root.findall('sms')
+
             logging.info(f"Starting to process XML file: {xml_file_path}")
-            
-            for sms in root.findall('sms'):
-                body = sms.find('body')
-                if body is not None and body.text:
-                    message = body.text.strip()
-                    
+
+            for sms in sms_elements:
+                body_text = sms.attrib.get('body')
+                if body_text:
+                    message = body_text.strip()
                     transaction_data = self.categorize_message(message)
-                    
                     if transaction_data:
                         if self.db.insert_transaction(transaction_data):
                             self.processed_count += 1
@@ -178,12 +158,12 @@ class SMSProcessor:
                         self.error_count += 1
                         self.db.log_error(message, "Could not categorize message")
                         logging.warning(f"Could not categorize: {message[:50]}...")
-            
+
             logging.info(f"Processing complete. Processed: {self.processed_count}, Errors: {self.error_count}")
             print(f"Processing complete!")
             print(f"Successfully processed: {self.processed_count} messages")
             print(f"Errors/Unprocessed: {self.error_count} messages")
-            
+
         except Exception as e:
             logging.error(f"Error processing XML file: {e}")
             print(f"Error processing file: {e}")
