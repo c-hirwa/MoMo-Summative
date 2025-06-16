@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Dashboard - MTN MoMo Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📱 SMS Dashboard</h1>
+            <p>MTN MoMo Transaction Analytics</p>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Transactions</h3>
+                <div class="stat-number" id="totalTransactions">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Volume</h3>
+                <div class="stat-number" id="totalVolume">0 RWF</div>
+            </div>
+            <div class="stat-card">
+                <h3>Transaction Types</h3>
+                <div class="stat-number" id="totalTypes">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>This Month</h3>
+                <div class="stat-number" id="thisMonth">0</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search transactions...">
+                <button onclick="searchTransactions()">🔍 Search</button>
+            </div>
+            <div class="filter-box">
+                <select id="typeFilter">
+                    <option value="">All Transaction Types</option>
+                </select>
+                <button onclick="filterTransactions()">Filter</button>
+                <button onclick="clearFilters()">Clear</button>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <h3>Transaction Types Distribution</h3>
+                <canvas id="typeChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Monthly Transaction Volume</h3>
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="table-container">
+            <h3>Transaction Details</h3>
+            <div class="table-wrapper">
+                <table id="transactionsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Details</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Transaction Detail Modal -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Transaction Details</h2>
+                <div id="modalContent">
+                    <!-- Detail content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Loading data...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
