@@ -9,7 +9,7 @@ We were provided with over 1600 SMS messages in XML format. Our task was to clea
 ## 🎥 Video Walkthrough
 [Link to your 5-minute demo video]
 
-## 🎥 Project Documentation
+## 📄 Project Documentation
 https://docs.google.com/document/d/1v3U3EK26Hcnx3EHVm8vg6OPHNibJhqVMNEmuRD1uOaU/edit?usp=sharing
 
 ## ✨ Features
