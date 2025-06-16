@@ -95,4 +95,4 @@ Then open `frontend/index.html`.
   (p.irakoze2@alustudent.com)
 
 - **Christopher Dushimimana**
-  (p.irakoze2@alustudent.com)
+  (d.christoph@alustudent.com)
