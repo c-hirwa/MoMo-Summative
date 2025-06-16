@@ -89,10 +89,10 @@ Then open `frontend/index.html`.
 ## 👥 Contributors
 
 - **Chris Hirwa**
-  Email: c.hirwa@alustudent.com 
+  (c.hirwa@alustudent.com)
 
 - **Promess Irakoze**
-  Email: p.irakoze2@alustudent.com
+  (p.irakoze2@alustudent.com)
 
 - **Christopher Dushimimana**
-  Email: p.irakoze2@alustudent.com
+  (p.irakoze2@alustudent.com)
