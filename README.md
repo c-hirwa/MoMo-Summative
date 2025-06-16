@@ -88,11 +88,11 @@ Then open `frontend/index.html`.
 
 ## 👥 Contributors
 
-- **Chris Hirwa (Full Stack Developer)**  
+- **Chris Hirwa**
   Email: c.hirwa@alustudent.com 
 
-- **Promess Irakoze (Full Stack Developer)**  
+- **Promess Irakoze**
   Email: p.irakoze2@alustudent.com
 
-- **Christopher Dushimimana (Full Stack Developer)**  
+- **Christopher Dushimimana**
   Email: p.irakoze2@alustudent.com
