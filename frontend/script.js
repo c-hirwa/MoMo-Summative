@@ -5,7 +5,7 @@ let charts = {};
 
 // API Configuration
 const API_BASE = 'http://localhost:5000/api';
-const USE_API = false; // Set to true if using Flask API, false for direct database access
+const USE_API = true; // Set to true if using Flask API, false for direct database access
 
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', function() {
