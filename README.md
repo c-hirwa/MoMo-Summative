@@ -6,6 +6,9 @@ We were provided with over 1600 SMS messages in XML format. Our task was to clea
 
 ---
 
+## 🎥 Video Walkthrough
+[Link to your 5-minute demo video]
+
 ## ✨ Features
 
 - Parse and categorize MTN SMS XML data
@@ -87,12 +90,9 @@ Then open `frontend/index.html`.
 
 - **Chris Hirwa (Full Stack Developer)**  
   Email: c.hirwa@alustudent.com 
-  Tasks: Data processing, backend, frontend
 
 - **Promess Irakoze (Full Stack Developer)**  
   Email: p.irakoze2@alustudent.com
-  Tasks: Data processing, backend, frontend
 
 - **Christopher Dushimimana (Full Stack Developer)**  
   Email: p.irakoze2@alustudent.com
-  Tasks: Data processing, backend, frontend
